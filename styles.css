@@ -1,0 +1,138 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: #050816;
+    scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+::-webkit-scrollbar-track {
+    background: #050816; 
+}
+::-webkit-scrollbar-thumb {
+    background: #1e3a8a; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #3B82F6; 
+}
+
+/* Animations Trigger Classes */
+.reveal {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.reveal.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
+
+/* Typing Effect Cursor */
+.typing-cursor::after {
+    content: '|';
+    animation: blink 1s step-end infinite;
+    color: #3B82F6;
+}
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+/* Vertical Timeline Replica (Tailwind CSS extended) */
+.vertical-timeline {
+    position: relative;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 2em 0;
+}
+.vertical-timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 24px;
+    width: 4px;
+    background: #1e293b;
+}
+
+.vertical-timeline-element {
+    position: relative;
+    margin: 3em 0;
+}
+
+.vertical-timeline-element::after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.vertical-timeline-element-icon {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.vertical-timeline-element-content {
+    margin-left: 80px;
+}
+
+/* Responsive Timeline Desktop */
+@media (min-width: 768px) {
+    .vertical-timeline::before {
+        left: 50%;
+        margin-left: -2px;
+    }
+    
+    .vertical-timeline-element-icon {
+        left: 50%;
+        margin-left: -25px;
+    }
+    
+    /* Left column */
+    .vertical-timeline-element:nth-child(odd) .vertical-timeline-element-content {
+        width: 44%;
+        margin-left: 0;
+    }
+    
+    /* Right column */
+    .vertical-timeline-element:nth-child(even) .vertical-timeline-element-content {
+        width: 44%;
+        float: right;
+    }
+
+    /* Arrows for timeline box */
+    .triangle-left {
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-right: 12px solid #0B1528;
+        position: absolute;
+        left: -12px;
+        top: 15px;
+    }
+    .triangle-right {
+        width: 0;
+        height: 0;
+        border-top: 10px solid transparent;
+        border-bottom: 10px solid transparent;
+        border-left: 12px solid #0B1528;
+        position: absolute;
+        right: -12px;
+        top: 15px;
+    }
+}

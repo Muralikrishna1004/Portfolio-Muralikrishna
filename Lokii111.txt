@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lokeshwaran V | Portfolio</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Manrope:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+tailwind.config = {
+darkMode: "class",
+theme: {
+extend: {
+"colors": {
+"on-primary-container": "#00533e",
+"primary": "#65ebbd",
+"surface": "#0d1417",
+"error-container": "#93000a",
+"tertiary-container": "#9fbdcb",
+"inverse-surface": "#dce4e6",
+"surface-variant": "#2f3638",
+"on-secondary-fixed-variant": "#004784",
+"outline": "#86948c",
+"on-error-container": "#ffdad6",
+"tertiary-fixed-dim": "#adcbd9",
+"on-primary-fixed-variant": "#00513c",
+"on-surface-variant": "#bbcac1",
+"on-primary": "#003828",
+"on-surface": "#dce4e6",
+"secondary": "#a4c8ff",
+"surface-tint": "#55ddb0",
+"on-tertiary": "#17343f",
+"secondary-fixed": "#d4e3ff",
+"primary-fixed-dim": "#55ddb0",
+"surface-container-highest": "#2f3638",
+"on-secondary-container": "#97c1ff",
+"secondary-fixed-dim": "#a4c8ff",
+"secondary-container": "#004e90",
+"on-error": "#690005",
+"on-secondary-fixed": "#001c3a",
+"on-primary-fixed": "#002116",
+"on-secondary": "#00315d",
+"surface-container-lowest": "#080f11",
+"inverse-on-surface": "#2a3234",
+"on-tertiary-fixed-variant": "#2e4b56",
+"tertiary": "#bbd9e7",
+"primary-container": "#43cea2",
+"surface-container-low": "#161d1f",
+"surface-dim": "#0d1417",
+"inverse-primary": "#006c51",
+"on-tertiary-container": "#304d58",
+"surface-container-high": "#242b2d",
+"primary-fixed": "#75facb",
+"tertiary-fixed": "#c9e7f6",
+"outline-variant": "#3c4a43",
+"on-tertiary-fixed": "#001f29",
+"background": "#0d1417",
+"surface-container": "#1a2123",
+"on-background": "#dce4e6",
+"surface-bright": "#333a3d",
+"error": "#ffb4ab"
+},
+"borderRadius": {
+"DEFAULT": "0.125rem",
+"lg": "0.25rem",
+"xl": "0.5rem",
+"full": "0.75rem"
+},
+"fontFamily": {
+"headline": ["Space Grotesk"],
+"body": ["Manrope"],
+"label": ["Space Grotesk"]
+}
+},
+},
+}
+</script>
+<style>
+body {
+background-color: #080f11;
+color: #dce4e6;
+font-family: 'Manrope', sans-serif;
+overflow-x: hidden;
+}
+.material-symbols-outlined {
+font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+}
+.glass-panel {
+background: rgba(47, 54, 56, 0.4);
+backdrop-filter: blur(20px);
+-webkit-backdrop-filter: blur(20px);
+}
+.kinetic-bg {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: -1;
+overflow: hidden;
+}
+.orb {
+position: absolute;
+border-radius: 50%;
+filter: blur(80px);
+opacity: 0.15;
+background: radial-gradient(circle, #43cea2 0%, #185a9d 100%);
+}
+.ghost-border {
+outline: 1px solid rgba(60, 74, 67, 0.15);
+}
+.text-gradient {
+background: linear-gradient(to right, #65ebbd, #a4c8ff);
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+</style>
+</head>
+<body class="bg-surface-container-lowest text-on-background selection:bg-primary/30 selection:text-primary">
+<!-- Kinetic Observatory Background -->
+<div class="kinetic-bg">
+<div class="orb w-[500px] h-[500px] -top-20 -left-20 animate-pulse"></div>
+<div class="orb w-[600px] h-[600px] top-1/2 -right-40 animate-bounce" style="animation-duration: 10s;"></div>
+<div class="orb w-[400px] h-[400px] bottom-0 left-1/4 opacity-10"></div>
+</div>
+<!-- TopNavBar -->
+<nav class="fixed top-0 w-full z-50 bg-emerald-950/40 backdrop-blur-xl shadow-2xl shadow-emerald-900/20 h-20">
+<div class="flex justify-between items-center max-w-7xl mx-auto px-8 h-full">
+<span class="text-xl font-bold tracking-tighter text-emerald-400 font-['Space_Grotesk']">LOKESHWARAN V</span>
+<div class="hidden md:flex items-center gap-8 font-['Space_Grotesk'] uppercase tracking-widest text-xs">
+<a class="text-slate-400 hover:text-emerald-200 transition-colors" href="#projects">Projects</a>
+<a class="text-slate-400 hover:text-emerald-200 transition-colors" href="#experience">Experience</a>
+<a class="text-slate-400 hover:text-emerald-200 transition-colors" href="#skills">Skills</a>
+<a class="text-slate-400 hover:text-emerald-200 transition-colors" href="#education">Education</a>
+<a class="text-slate-400 hover:text-emerald-200 transition-colors" href="#about">About</a>
+</div>
+<button class="bg-primary-container text-on-primary-container px-6 py-2 font-['Space_Grotesk'] font-bold text-xs uppercase tracking-widest hover:scale-95 active:scale-90 duration-200 transition-all">
+Contact Me
+</button>
+</div>
+</nav>
+<main>
+<!-- Hero Section -->
+<section class="relative min-h-screen flex items-center justify-center pt-20 px-8 overflow-hidden" id="hero">
+<div class="absolute inset-0 z-0">
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full opacity-20" data-alt="abstract flowing mesh of metallic liquid and emerald green light particles in deep space" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCDF-03lqxR8ZS_E4vmSz69LoLOztC-s3X4QP4x5LGxb-qZZUl2OX3HScygMoImaFeF3w_y7x3ATrPR1lpjr0LVnkReVnKylyKLWCYQTOk5ltlqW8sz22_f4fLsu9MIoBoP-qKXlP27M0n14q1VdpEHrW6ijWJPkIqfNFFfHMgBGZibyuEPA1ZrBUfETDDVKWnA55drgA_P8gEw24GIQqEALqncXR_GXLQnMqPXkWdZrjdiUwsBPufgszCa1PVNp0ahT50o7xPRXWU'); background-size: cover; background-position: center;"></div>
+</div>
+<div class="relative z-10 text-center max-w-5xl">
+<p class="font-headline text-primary tracking-[0.3em] uppercase text-sm mb-6">Innovative Solutions &amp; Clean Code</p>
+<h1 class="font-headline text-7xl md:text-9xl font-bold tracking-tighter mb-8 leading-none">
+LOKESHWARAN V
+</h1>
+<div class="glass-panel ghost-border inline-block px-8 py-4 mb-12">
+<p class="font-headline text-lg md:text-2xl text-on-surface-variant font-medium tracking-widest">
+WEB DEVELOPER <span class="text-primary mx-4">|</span> PYTHON FULL STACK
+</p>
+</div>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<a class="group flex items-center gap-3 text-on-primary-fixed font-headline font-bold bg-primary px-8 py-4 rounded-none hover:bg-primary-fixed transition-all duration-300" href="#projects">
+VIEW PROJECTS
+<span class="material-symbols-outlined group-hover:translate-x-1 transition-transform">arrow_forward</span>
+</a>
+<a class="flex items-center gap-3 text-on-surface font-headline font-bold glass-panel ghost-border px-8 py-4 rounded-none hover:bg-surface-variant transition-all duration-300" href="#about">
+MY STORY
+</a>
+</div>
+</div>
+<div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-50">
+<span class="font-headline text-[10px] tracking-[0.5em] uppercase">Scroll</span>
+<div class="w-[1px] h-12 bg-gradient-to-b from-primary to-transparent"></div>
+</div>
+</section>
+<!-- About & Experience Section (Editorial Depth) -->
+<section class="py-32 px-8 max-w-7xl mx-auto" id="about">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-16 items-start">
+<div class="lg:col-span-5 relative">
+<div class="sticky top-32">
+<span class="font-headline text-primary-fixed text-xs font-bold tracking-[0.4em] uppercase mb-4 block">Foundations</span>
+<h2 class="font-headline text-5xl font-bold tracking-tight mb-8">Evolution of a <span class="text-gradient">Developer</span></h2>
+<p class="text-on-surface-variant text-lg leading-relaxed mb-8">
+Based at the intersection of logical backend architecture and fluid frontend experiences. Currently pursuing an MCA degree while refining the craft of Full-Stack engineering.
+</p>
+<div class="flex items-center gap-4 py-6 border-t border-outline-variant/20">
+<div class="w-12 h-12 bg-surface-container-high flex items-center justify-center">
+<span class="material-symbols-outlined text-primary">school</span>
+</div>
+<div>
+<h4 class="font-headline font-bold text-sm">Master of Computer Applications</h4>
+<p class="text-xs text-on-surface-variant opacity-70">Focusing on Advanced Algorithms &amp; Cloud Infrastructure</p>
+</div>
+</div>
+</div>
+</div>
+<div class="lg:col-span-7 space-y-8" id="experience">
+<div class="glass-panel ghost-border p-10 group hover:bg-surface-container-high transition-all duration-500">
+<div class="flex justify-between items-start mb-6">
+<div>
+<h3 class="font-headline text-2xl font-bold mb-1">Python Full Stack Intern</h3>
+<p class="text-primary font-headline font-medium text-sm tracking-widest uppercase">Vcodez Technologies</p>
+</div>
+<span class="font-headline text-xs text-on-surface-variant/50">2023 - PRESENT</span>
+</div>
+<ul class="space-y-4 text-on-surface-variant">
+<li class="flex gap-4">
+<span class="text-primary mt-1 material-symbols-outlined text-sm" data-weight="fill">radio_button_checked</span>
+<p>Developing scalable web applications using Django and Flask frameworks, optimizing database queries for high performance.</p>
+</li>
+<li class="flex gap-4">
+<span class="text-primary mt-1 material-symbols-outlined text-sm" data-weight="fill">radio_button_checked</span>
+<p>Crafting responsive, high-fidelity user interfaces using modern CSS methodologies and JavaScript ecosystems.</p>
+</li>
+<li class="flex gap-4">
+<span class="text-primary mt-1 material-symbols-outlined text-sm" data-weight="fill">radio_button_checked</span>
+<p>Collaborating in agile sprints to deliver end-to-end features, from API design to cloud deployment.</p>
+</li>
+</ul>
+</div>
+<!-- Asymmetric Graphic Component -->
+<div class="relative h-64 w-full overflow-hidden ghost-border">
+<img alt="" class="w-full h-full object-cover grayscale opacity-30 hover:grayscale-0 hover:opacity-50 transition-all duration-700" data-alt="close up of glowing computer circuits and microchips with teal laser light beams representing high tech infrastructure" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBynxqfcLhpzFYAbdSQj_ksjAbSzR914R3BPf1dq1i7z3sSeX2EeHK7tlnXpWDS1B6aa7cyoBPOt6W_LpuXhMFQKmgVt45nwbdIMeNXYbGglBG6oRMZrJkNiXS36kfm7BGgO9AJWAGxOEfT3R8GuK0CdrjUJxl6pdov6x4dwy08P-nLwVXc8Inl0ZsK4VSv20MUCzLNZ2SaBGgrvDjGO0ZCvGRsj-1BDQC7u6d4fjM5HaSMXhco4mmK4ivkczYyv7zowXOmnMUBoB8"/>
+<div class="absolute inset-0 flex items-center justify-center">
+<span class="font-headline text-4xl font-extrabold tracking-tighter text-white/10 select-none">CODE ARCHITECTURE</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Digital Arsenal (Skills Bento) -->
+<section class="py-32 px-8 bg-surface-container-low" id="skills">
+<div class="max-w-7xl mx-auto">
+<div class="text-center mb-20">
+<span class="font-headline text-primary-fixed text-xs font-bold tracking-[0.4em] uppercase mb-4 block">The Toolkit</span>
+<h2 class="font-headline text-5xl font-bold tracking-tight">Digital <span class="text-gradient">Arsenal</span></h2>
+</div>
+<div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+<!-- Python -->
+<div class="glass-panel ghost-border p-8 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-primary group-hover:scale-110 transition-transform">code</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase">Python</span>
+</div>
+<!-- Django -->
+<div class="glass-panel ghost-border p-8 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">layers</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase">Django</span>
+</div>
+<!-- Frontend -->
+<div class="glass-panel ghost-border p-8 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-primary group-hover:scale-110 transition-transform">brush</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase">Tailwind</span>
+</div>
+<!-- SQL -->
+<div class="glass-panel ghost-border p-8 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">database</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase">Postgres</span>
+</div>
+<!-- API -->
+<div class="glass-panel ghost-border p-8 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-primary group-hover:scale-110 transition-transform">api</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase">REST APIs</span>
+</div>
+<!-- Cloud -->
+<div class="glass-panel ghost-border p-8 flex flex-col items-center justify-center gap-4 group hover:bg-surface-container-highest transition-all duration-300">
+<span class="material-symbols-outlined text-4xl text-secondary group-hover:scale-110 transition-transform">cloud</span>
+<span class="font-headline text-sm font-bold tracking-widest uppercase">AWS</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Projects Section (Showcase) -->
+<section class="py-32 px-8 max-w-7xl mx-auto" id="projects">
+<div class="flex flex-col md:flex-row justify-between items-end mb-16 gap-8">
+<div>
+<span class="font-headline text-primary-fixed text-xs font-bold tracking-[0.4em] uppercase mb-4 block">Selected Works</span>
+<h2 class="font-headline text-5xl font-bold tracking-tight">Signature <span class="text-gradient">Projects</span></h2>
+</div>
+<p class="text-on-surface-variant max-w-md text-right hidden md:block">
+A curated collection of digital systems designed to solve complex real-world problems through elegant code.
+</p>
+</div>
+<div class="grid grid-cols-1 gap-20">
+<!-- Aquaculture Project -->
+<div class="group relative grid grid-cols-1 lg:grid-cols-12 gap-0 items-center overflow-hidden">
+<div class="lg:col-span-7 h-[500px] overflow-hidden ghost-border relative">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" data-alt="modern industrial indoor aquaculture facility with glowing blue LED water tanks and computer monitoring screens" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAc_pQrOODMHUMcMq_HszXLa0Swr9PgqP3w9hAiwgX7cvqq_z1I2XLZamQDFFpyWcHCOQuAFfB7yOQh3CtNurd2JI0LBCG9_G6FgCtwmDGVRo8lcy0WVFvetwjJJvjIO4tvKABARNaaFSqJDyOwaIITnooMXdjHEFwF99oPku0OpgLobzhqhx5FnCYqi-Ef1-duSUdd9jYtSm2XRWFDm-hdg-Vya9uYJOgZ3Or3PXei4z9H6G3xFR_10JOlPgQM64kMjkGxtcWQYvA"/>
+<div class="absolute inset-0 bg-emerald-950/20 mix-blend-overlay"></div>
+</div>
+<div class="lg:col-span-5 glass-panel ghost-border p-12 lg:-ml-12 relative z-10">
+<span class="font-headline text-xs text-primary font-bold tracking-widest uppercase mb-4 block">Full-Stack Solution</span>
+<h3 class="font-headline text-4xl font-bold mb-6">AQUACULTURE Management System</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">
+An intelligent IoT-driven platform designed to monitor water quality parameters in real-time. Features automated feeding schedules, health analytics dashboard, and predictive mortality alerts.
+</p>
+<div class="flex flex-wrap gap-3 mb-10">
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] font-headline font-bold uppercase tracking-widest text-secondary">Django</span>
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] font-headline font-bold uppercase tracking-widest text-secondary">IoT Integration</span>
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] font-headline font-bold uppercase tracking-widest text-secondary">ChartJS</span>
+</div>
+<a class="inline-flex items-center gap-2 font-headline font-bold text-sm text-primary hover:gap-4 transition-all" href="#">
+EXPLORE CASE STUDY <span class="material-symbols-outlined">trending_flat</span>
+</a>
+</div>
+</div>
+<!-- Secondary Project Placeholder (Asymmetric layout swap) -->
+<div class="group relative grid grid-cols-1 lg:grid-cols-12 gap-0 items-center overflow-hidden">
+<div class="lg:col-span-5 glass-panel ghost-border p-12 lg:-mr-12 relative z-10 order-2 lg:order-1">
+<span class="font-headline text-xs text-secondary font-bold tracking-widest uppercase mb-4 block">Python Automation</span>
+<h3 class="font-headline text-4xl font-bold mb-6">Sentinel Analytics</h3>
+<p class="text-on-surface-variant mb-8 leading-relaxed">
+A custom data scraping and sentiment analysis engine built to track market trends across multiple social platforms simultaneously.
+</p>
+<div class="flex flex-wrap gap-3 mb-10">
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] font-headline font-bold uppercase tracking-widest text-primary">Selenium</span>
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] font-headline font-bold uppercase tracking-widest text-primary">NLP</span>
+<span class="bg-surface-container-highest px-3 py-1 text-[10px] font-headline font-bold uppercase tracking-widest text-primary">Pandas</span>
+</div>
+<a class="inline-flex items-center gap-2 font-headline font-bold text-sm text-secondary hover:gap-4 transition-all" href="#">
+VIEW REPOSITORY <span class="material-symbols-outlined">trending_flat</span>
+</a>
+</div>
+<div class="lg:col-span-7 h-[500px] overflow-hidden ghost-border relative order-1 lg:order-2">
+<img alt="" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[2000ms]" data-alt="abstract data visualization with glowing green and blue bar graphs and floating code snippets on dark background" src="https://lh3.googleusercontent.com/aida-public/AB6AXuClxx0P1hN3hxXbLG9UAIC3VAluM7KpWkWBGJQKNXzoM-AkkSumDzg8aVNsfq8BtWhYZJK1z2oU0TASXshSLXp6X_bhYzQXurT8zvORDs5XAPwLLbtB2xtAmECf52IBzPOmQTCwkU9uysFivwhBL4P_F_PVxGgYBsnWwi63QlhTRPzkHDOSUjRTu8v5nWn0KxATjkAr9qgqF181SVk4Bce9DB80XojboWdlN-a6pewZGPOODjsRTFt1se25g0WrF99qVmT_gYZo4rs"/>
+</div>
+</div>
+</div>
+</section>
+<!-- CTA Section -->
+<section class="py-32 px-8" id="contact">
+<div class="max-w-4xl mx-auto glass-panel ghost-border p-16 text-center relative overflow-hidden">
+<div class="absolute -top-20 -right-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl"></div>
+<div class="absolute -bottom-20 -left-20 w-64 h-64 bg-secondary/10 rounded-full blur-3xl"></div>
+<span class="font-headline text-primary text-xs font-bold tracking-[0.4em] uppercase mb-6 block">Ready to Build?</span>
+<h2 class="font-headline text-5xl md:text-6xl font-bold mb-10 leading-tight">Let's create the next <span class="text-gradient">digital landmark.</span></h2>
+<div class="flex flex-col md:flex-row gap-6 justify-center items-center">
+<a class="bg-primary text-on-primary-fixed font-headline font-bold px-10 py-5 hover:bg-primary-fixed transition-all w-full md:w-auto" href="mailto:contact@lokeshwaran.com">
+START A PROJECT
+</a>
+<div class="flex gap-4">
+<a class="w-14 h-14 glass-panel ghost-border flex items-center justify-center hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">alternate_email</span>
+</a>
+<a class="w-14 h-14 glass-panel ghost-border flex items-center justify-center hover:bg-surface-container-highest transition-all" href="#">
+<span class="material-symbols-outlined">link</span>
+</a>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-[#080F11] w-full py-12 mt-20 border-t border-emerald-900/20">
+<div class="flex flex-col md:flex-row justify-between items-center max-w-7xl mx-auto px-8">
+<div class="mb-8 md:mb-0">
+<span class="font-['Space_Grotesk'] font-bold text-emerald-400 text-xl tracking-tighter">LOKESHWARAN V</span>
+<p class="font-['Manrope'] text-sm text-slate-500 mt-2">© 2024 Lokeshwaran V • MCA Portfolio</p>
+</div>
+<div class="flex gap-8 font-['Manrope'] text-sm text-slate-400">
+<a class="hover:text-emerald-300 transition-colors duration-300" href="#">GitHub</a>
+<a class="hover:text-emerald-300 transition-colors duration-300" href="#">LinkedIn</a>
+<a class="hover:text-emerald-300 transition-colors duration-300" href="#">Twitter</a>
+<a class="hover:text-emerald-300 transition-colors duration-300" href="#">Email</a>
+</div>
+</div>
+</footer>
+</body></html>
