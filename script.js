@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Typewriter effect logic specifically tailored to replicate exactly the screenshot's state
     const typewriterElement = document.getElementById('typewriter');
-    const roleTexts = ["Python Full Stack Developer", "Software Engineer"];
+    const roleTexts = ["Python Full Stack Developer", "Developer"];
     let roleIndex = 0;
     let charIndex = 0;
     let isDeleting = false;
@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         particlesJS("particles-js", {
             "particles": {
                 "number": {
-                    "value": 120,
+                    "value": 70,
                     "density": {
                         "enable": true,
                         "value_area": 800
@@ -180,12 +180,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 },
                 "size": {
-                    "value": 4.5,
+                    "value": 6,
                     "random": true,
                     "anim": {
                         "enable": true,
                         "speed": 2,
-                        "size_min": 1,
+                        "size_min": 2,
                         "sync": false
                     }
                 },
@@ -227,7 +227,32 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
             },
-            "retina_detect": true
+        });
+
+        // Custom Fast Parallax Scroll Effect for Particles (Match Video)
+        let lastScrollY = window.scrollY;
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            const deltaY = currentScrollY - lastScrollY;
+            lastScrollY = currentScrollY;
+
+            if (window.pJSDom && window.pJSDom.length > 0) {
+                const pJS = window.pJSDom[0].pJS;
+                pJS.particles.array.forEach(p => {
+                    // Make the dots move in a slanting/circular pattern rapidly on scroll
+                    // We modify both x and y to give it a curved or diagonal pass-by feel
+                    p.y -= deltaY * 3.5; 
+                    p.x -= deltaY * 1.5; 
+
+                    // Ensure safe wrapping around the canvas
+                    if (pJS.canvas.h > 0) {
+                        p.y = (p.y % pJS.canvas.h + pJS.canvas.h) % pJS.canvas.h;
+                    }
+                    if (pJS.canvas.w > 0) {
+                        p.x = (p.x % pJS.canvas.w + pJS.canvas.w) % pJS.canvas.w;
+                    }
+                });
+            }
         });
     }
 });
