@@ -152,107 +152,215 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Particles JS Configuration for Space/Parallax Effect ---
-    if (typeof particlesJS !== 'undefined') {
-        particlesJS("particles-js", {
-            "particles": {
-                "number": {
-                    "value": 70,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": ["#ffffff", "#3B82F6", "#8b5cf6"] // White and theme colored stars
-                },
-                "shape": {
-                    "type": "circle"
-                },
-                "opacity": {
-                    "value": 0.8,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 1,
-                        "opacity_min": 0.3,
-                        "sync": false
-                    }
-                },
-                "size": {
-                    "value": 6,
-                    "random": true,
-                    "anim": {
-                        "enable": true,
-                        "speed": 2,
-                        "size_min": 2,
-                        "sync": false
-                    }
-                },
-                "line_linked": {
-                    "enable": false // No lines between dots to match the screenshot
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 0.6, // Slow drift
-                    "direction": "none",
-                    "random": true,
-                    "straight": false,
-                    "out_mode": "out",
-                    "bounce": false,
-                    "attract": {
-                        "enable": false,
-                        "rotateX": 600,
-                        "rotateY": 1200
-                    }
-                }
-            },
-            "interactivity": {
-                "detect_on": "window", // Changed to window so parallax works immediately
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "parallax"
-                    },
-                    "onclick": {
-                        "enable": false,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "parallax": {
-                        "force": 40,
-                        "smooth": 10
-                    }
-                }
-            },
+    // --- Three.js 3D Parallax Background ---
+    let scene, camera, renderer, meshGroup, particleSystem;
+    let mouseX = 0, mouseY = 0;
+    let targetX = 0, targetY = 0;
+    let targetScrollY = 0;
+    let windowHalfX = window.innerWidth / 2;
+    let windowHalfY = window.innerHeight / 2;
+
+    function initThreeJS() {
+        const container = document.getElementById('canvas-container');
+        if (!container) return;
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 2000);
+        camera.position.z = 1000;
+
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        container.appendChild(renderer.domElement);
+
+        meshGroup = new THREE.Group();
+        scene.add(meshGroup);
+
+        // Particles Geometry
+        const particlesCount = 2000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = new Float32Array(particlesCount * 3);
+        const colors = new Float32Array(particlesCount * 3);
+
+        const colorOptions = [
+            new THREE.Color('#3B82F6'),
+            new THREE.Color('#60A5FA'),
+            new THREE.Color('#ffffff')
+        ];
+
+        for (let i = 0; i < particlesCount * 3; i += 3) {
+            positions[i] = (Math.random() - 0.5) * 2500;
+            positions[i + 1] = (Math.random() - 0.5) * 2500;
+            positions[i + 2] = (Math.random() - 0.5) * 2500;
+
+            const clr = colorOptions[Math.floor(Math.random() * colorOptions.length)];
+            colors[i] = clr.r;
+            colors[i + 1] = clr.g;
+            colors[i + 2] = clr.b;
+        }
+
+        geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 4,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
         });
 
-        // Custom Fast Parallax Scroll Effect for Particles (Match Video)
-        let lastScrollY = window.scrollY;
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-            const deltaY = currentScrollY - lastScrollY;
-            lastScrollY = currentScrollY;
+        particleSystem = new THREE.Points(geometry, material);
+        meshGroup.add(particleSystem);
 
-            if (window.pJSDom && window.pJSDom.length > 0) {
-                const pJS = window.pJSDom[0].pJS;
-                pJS.particles.array.forEach(p => {
-                    // Make the dots move in a slanting/circular pattern rapidly on scroll
-                    // We modify both x and y to give it a curved or diagonal pass-by feel
-                    p.y -= deltaY * 3.5; 
-                    p.x -= deltaY * 1.5; 
+        // Add a subtle wireframe mesh for more 3D depth
+        const meshGeometry = new THREE.IcosahedronGeometry(700, 2);
+        const meshMaterial = new THREE.MeshBasicMaterial({
+            color: 0x3B82F6,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.1
+        });
+        const mesh = new THREE.Mesh(meshGeometry, meshMaterial);
+        meshGroup.add(mesh);
 
-                    // Ensure safe wrapping around the canvas
-                    if (pJS.canvas.h > 0) {
-                        p.y = (p.y % pJS.canvas.h + pJS.canvas.h) % pJS.canvas.h;
-                    }
-                    if (pJS.canvas.w > 0) {
-                        p.x = (p.x % pJS.canvas.w + pJS.canvas.w) % pJS.canvas.w;
-                    }
+        window.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('resize', onWindowResize);
+        window.addEventListener('scroll', onScroll);
+
+        animate();
+    }
+
+    function onMouseMove(event) {
+        mouseX = (event.clientX - windowHalfX);
+        mouseY = (event.clientY - windowHalfY);
+    }
+
+    function onScroll() {
+        targetScrollY = window.scrollY;
+    }
+
+    function onWindowResize() {
+        windowHalfX = window.innerWidth / 2;
+        windowHalfY = window.innerHeight / 2;
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animate() {
+        requestAnimationFrame(animate);
+        render();
+    }
+
+    function render() {
+        const time = Date.now() * 0.0005;
+        
+        targetX = mouseX * 0.001; 
+        targetY = mouseY * 0.001;
+
+        if (meshGroup) {
+            // Constant base rotation (Automatic movement)
+            meshGroup.rotation.y += 0.0015;
+            meshGroup.rotation.x += 0.001;
+            
+            // Mouse movement lerp (Interactive movement)
+            meshGroup.rotation.x += (targetY - meshGroup.rotation.x) * 0.05;
+            meshGroup.rotation.y += (targetX - meshGroup.rotation.y) * 0.05;
+
+            // Scroll movement lerp (Parallax)
+            const scrollParallax = targetScrollY * 0.3;
+            meshGroup.position.y += (scrollParallax - meshGroup.position.y) * 0.05;
+
+            // Automatic "Floating" oscillation
+            meshGroup.position.x = Math.sin(time * 0.5) * 50;
+            meshGroup.position.z = Math.cos(time * 0.3) * 30;
+
+            if (particleSystem) {
+                // Individual particle drift effect
+                particleSystem.rotation.z = Math.sin(time * 0.2) * 0.1;
+                
+                // Pulsating effect for the particles
+                const scale = 1 + Math.sin(time) * 0.05;
+                particleSystem.scale.set(scale, scale, scale);
+            }
+        }
+
+        camera.lookAt(scene.position);
+        renderer.render(scene, camera);
+    }
+
+    initThreeJS();
+
+    // Hide Preloader on Window Load
+    window.addEventListener('load', () => {
+        const preloader = document.getElementById('preloader');
+        if (preloader) {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 700);
+        }
+    });
+
+    // --- Custom Cursor Logic ---
+    const cursor = document.getElementById('cursor');
+    const cursorDot = document.getElementById('cursor-dot');
+    
+    if (cursor && cursorDot) {
+        document.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            // Cursor dot follows immediately
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Outer cursor follows with slight delay (handled by CSS transition or JS lerp)
+            // Here we use requestAnimationFrame for smoother following if needed, 
+            // but simple CSS transition on transform/left/top also works.
+            cursor.style.left = `${posX}px`;
+            cursor.style.top = `${posY}px`;
+        });
+
+        // Expand cursor on hoverable elements
+        const hoverables = document.querySelectorAll('a, button, .skill-item, .vertical-timeline-element-content');
+        hoverables.forEach(el => {
+            el.addEventListener('mouseenter', () => {
+                cursor.classList.add('cursor-hover');
+            });
+            el.addEventListener('mouseleave', () => {
+                cursor.classList.remove('cursor-hover');
+            });
+        });
+    }
+
+    // --- Scroll Progress Logic ---
+    const scrollProgress = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+        const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (window.scrollY / totalHeight) * 100;
+        if (scrollProgress) {
+            scrollProgress.style.width = `${progress}%`;
+        }
+    });
+
+    // --- Skill Bars Animation ---
+    const skillObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBars = entry.target.querySelectorAll('.skill-progress');
+                progressBars.forEach(bar => {
+                    const targetWidth = bar.getAttribute('data-progress');
+                    bar.style.width = targetWidth;
                 });
             }
         });
+    }, { threshold: 0.5 });
+
+    const skillsSection = document.getElementById('skills');
+    if (skillsSection) {
+        skillObserver.observe(skillsSection);
     }
 });
+

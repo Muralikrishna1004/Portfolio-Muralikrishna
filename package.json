@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "Modern Portfolio Website",
   "scripts": {
-    "dev": "npx --yes vite"
+    "dev": "npx --yes vite",
+    "build": "npx --yes vite build",
+    "preview": "npx --yes vite preview"
   },
   "keywords": [],
   "author": "",
