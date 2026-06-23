@@ -1,0 +1,4 @@
+Please place your certificate images here:
+1. python_course.jpg (or .png / .pdf)
+2. bsc_certificate.jpg (or .png / .pdf)
+3. internship_certificate.jpg (or .png / .pdf)
