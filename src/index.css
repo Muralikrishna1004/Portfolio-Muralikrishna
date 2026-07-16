@@ -344,15 +344,13 @@ body {
 }
 
 @keyframes particle-float {
-  0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-  10% { opacity: 1; }
-  90% { opacity: 0.5; }
-  100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  0% { transform: translateY(105vh) translateX(0px) rotate(0deg) scale(0.8); opacity: 0; }
+  10% { opacity: 0.9; }
+  35% { transform: translateY(70vh) translateX(35px) rotate(90deg) scale(1.1); }
+  65% { transform: translateY(35vh) translateX(-25px) rotate(220deg) scale(0.9); }
+  90% { opacity: 0.7; }
+  100% { transform: translateY(-10vh) translateX(15px) rotate(360deg) scale(1.1); opacity: 0; }
 }
-
-/* =============================================
-   3D CARD TILT EFFECT
-   ============================================= */
 .tilt-card {
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out, box-shadow 0.3s ease;
@@ -557,4 +555,67 @@ body {
 /* Number glow */
 .number-glow {
   text-shadow: 0 0 20px rgba(0,245,212,0.7), 0 0 40px rgba(0,217,255,0.4);
+}
+
+/* =============================================
+   CUSTOM ROTATION AND ORBIT ANIMATIONS
+   ============================================= */
+
+/* Spin animation for bio card border */
+@keyframes border-spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.animate-border-spin {
+  animation: border-spin 8s linear infinite;
+}
+
+/* Outer orbit animation for role badges */
+@keyframes orbit-outer {
+  0% {
+    transform: rotate(0deg) translateX(190px) rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg) translateX(190px) rotate(-360deg);
+  }
+}
+.animate-orbit-outer {
+  animation: orbit-outer 24s linear infinite;
+}
+
+/* Custom float and code editor animation */
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-15px) rotate(2deg); }
+}
+.animate-float-slow {
+  animation: float-slow 8s ease-in-out infinite;
+}
+
+@keyframes float-delayed {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(12px) rotate(-3deg); }
+}
+.animate-float-delayed {
+  animation: float-delayed 7s ease-in-out infinite;
+  animation-delay: 2s;
+}
+
+/* 3 seconds countdown animation */
+@keyframes countdown {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+.animate-countdown-3s {
+  animation: countdown 3s linear forwards;
+}
+
+/* Timeline Laser Pulse Animation */
+@keyframes laser-pulse {
+  0% { transform: translateY(-150px); }
+  100% { transform: translateY(100vh); }
+}
+.animate-laser-pulse {
+  animation: laser-pulse 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }

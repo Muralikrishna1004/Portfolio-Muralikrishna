@@ -50,19 +50,25 @@ function useTypewriter(texts: string[], speed = 60, pauseMs = 2000) {
   return display;
 }
 
-const ORBIT_BADGES = [
-  { label: 'React', icon: '⚛️', delay: '0s', radius: 130 },
-  { label: 'Django', icon: '🐍', delay: '-6.67s', radius: 130 },
-  { label: 'MySQL', icon: '🗄️', delay: '-13.33s', radius: 130 },
-];
-
 export default function Hero() {
   const { isDark } = useTheme();
   const mouse = useMouseParallax();
-  const [showLightbox, setShowLightbox] = useState(false);
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const cardRef = useRef<HTMLDivElement>(null);
   const roleText = useTypewriter(ROLES);
+  const [isRunning, setIsRunning] = useState(false);
+
+  const handleRunCode = () => {
+    if (isRunning) return;
+    setIsRunning(true);
+    
+    // Open the terminal simulation page served from public in a new tab
+    window.open('/run.html', '_blank');
+    
+    setTimeout(() => {
+      setIsRunning(false);
+    }, 1500);
+  };
 
   const handleCardMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
     const card = cardRef.current;
@@ -103,28 +109,31 @@ export default function Hero() {
         }}
       />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid lg:grid-cols-2 gap-16 items-center min-h-screen py-24">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full py-24">
+        {/* On lg screens: side-by-side layout. On mobile/tablet: stacked flex-col */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-12 lg:gap-20 min-h-[calc(100vh-120px)] w-full py-12">
 
-          {/* Left — Text Content */}
+          {/* Left Side: Content Section (Name, Typewriter, Badge, Bio, Buttons, Socials) */}
           <div
-            className="order-2 lg:order-1 space-y-8"
+            className="flex-1 flex flex-col items-center lg:items-start text-center lg:text-left space-y-8 max-w-2xl w-full"
             style={{
               transform: `translate(${mouse.x * -6}px, ${mouse.y * -6}px)`,
               transition: 'transform 0.3s ease-out',
             }}
           >
             {/* Badge */}
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cosmic-teal/30 bg-cosmic-teal/5 backdrop-blur-sm">
-              <span className="w-2 h-2 rounded-full bg-cosmic-teal animate-pulse" style={{ boxShadow: '0 0 8px #00F5D4' }} />
-              <span className="text-cosmic-teal text-sm font-medium tracking-wider">Available for Opportunities</span>
+            <div className="flex lg:justify-start">
+              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cosmic-teal/30 bg-cosmic-teal/5 backdrop-blur-sm">
+                <span className="w-2 h-2 rounded-full bg-cosmic-teal animate-pulse" style={{ boxShadow: '0 0 8px #00F5D4' }} />
+                <span className="text-cosmic-teal text-sm font-medium tracking-wider">Available for Opportunities</span>
+              </div>
             </div>
 
             {/* Name with glitch */}
-            <div>
+            <div className="w-full">
               <h1
-                className="glitch-text text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-none whitespace-nowrap"
-                data-text={personalInfo.name}
+                className="glitch-text text-3xl sm:text-5xl lg:text-5xl xl:text-6xl font-black tracking-tight leading-none text-center lg:text-left inline-block whitespace-nowrap"
+                data-text="Hello I'm Murali Krishna"
                 style={{
                   background: 'linear-gradient(135deg, #ffffff 0%, #00F5D4 40%, #00D9FF 70%, #8B5CF6 100%)',
                   WebkitBackgroundClip: 'text',
@@ -133,197 +142,222 @@ export default function Hero() {
                   fontFamily: '"Orbitron", monospace',
                 }}
               >
-                {personalInfo.name}
+                Hello I'm Murali Krishna
               </h1>
             </div>
 
             {/* Typewriter role */}
-            <div className="h-12 flex items-center">
+            <div className="h-12 flex items-center justify-center lg:justify-start">
               <span
-                className={`text-xl sm:text-2xl font-semibold typewriter-cursor ${isDark ? 'text-cosmic-blue' : 'text-cosmic-blue'}`}
+                className={`text-xl sm:text-3xl font-semibold typewriter-cursor ${isDark ? 'text-cosmic-blue' : 'text-cosmic-blue'}`}
                 style={{ textShadow: '0 0 20px rgba(0,217,255,0.5)' }}
               >
                 {roleText}
               </span>
             </div>
 
-            {/* Bio */}
-            <p className={`text-lg leading-relaxed max-w-xl ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-              {personalInfo.valueStatement}
-            </p>
-
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
-              <button
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                className="group relative px-8 py-4 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105"
+            {/* Bio with custom decorative border and background */}
+            <div
+              className="relative p-[1.5px] rounded-2xl overflow-hidden w-full group/bio"
+              style={{
+                boxShadow: isDark 
+                  ? '0 0 25px rgba(139,92,246,0.15)' 
+                  : '0 4px 25px rgba(0,217,255,0.08)'
+              }}
+            >
+              {/* Rotating background gradient for the border */}
+              <div 
+                className="absolute inset-[-500%] animate-border-spin pointer-events-none"
                 style={{
-                  background: 'linear-gradient(135deg, #8B5CF6, #00D9FF)',
-                  boxShadow: '0 0 20px rgba(139,92,246,0.4)',
+                  background: 'conic-gradient(from 0deg, #00F5D4 0%, #00D9FF 25%, #8B5CF6 50%, #00D9FF 75%, #00F5D4 100%)',
                 }}
-              >
-                <span className="relative z-10">View My Work</span>
-                <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-              </button>
+              />
 
-              <a
-                href={personalInfo.resumeUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={`flex items-center gap-2 px-8 py-4 rounded-xl font-bold border-2 transition-all duration-300 hover:scale-105 ${isDark
-                  ? 'border-cosmic-teal/50 text-cosmic-teal hover:bg-cosmic-teal/10 hover:border-cosmic-teal hover:shadow-[0_0_20px_rgba(0,245,212,0.3)]'
-                  : 'border-cosmic-teal text-cosmic-teal hover:bg-cosmic-teal hover:text-gray-900'
-                  }`}
+              {/* Inside Content Card */}
+              <div
+                className={`relative p-5 rounded-2xl backdrop-blur-xl transition-all duration-500 w-full h-full z-10
+                  ${isDark ? 'bg-cosmic-black/90 text-gray-300' : 'bg-white/95 text-gray-700'}`}
               >
-                <Download size={18} />
-                Resume
-              </a>
+                {/* Corner tech accents/glow lines */}
+                <div className="absolute top-0 left-0 w-3 h-3 border-t-2 border-l-2 border-cosmic-teal/40 group-hover/bio:border-cosmic-teal transition-colors duration-500 rounded-tl-md" />
+                <div className="absolute bottom-0 right-0 w-3 h-3 border-b-2 border-r-2 border-cosmic-purple/40 group-hover/bio:border-cosmic-purple transition-colors duration-500 rounded-br-md" />
+                
+                <p className="text-base sm:text-lg leading-relaxed relative z-10">
+                  {personalInfo.valueStatement}
+                </p>
+              </div>
             </div>
 
-            {/* Social Icons */}
-            <div className="flex items-center gap-3">
-              {socialLinks.map((link) => (
+            {/* CTA Buttons & Social Icons */}
+            <div className="space-y-6 w-full flex flex-col items-center lg:items-start">
+              {/* CTA Buttons */}
+              <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+                <button
+                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="group relative px-8 py-4 rounded-xl font-bold text-white overflow-hidden transition-all duration-300 hover:scale-105"
+                  style={{
+                    background: 'linear-gradient(135deg, #8B5CF6, #00D9FF)',
+                    boxShadow: '0 0 20px rgba(139,92,246,0.4)',
+                  }}
+                >
+                  <span className="relative z-10">View My Work</span>
+                  <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </button>
+
                 <a
-                  key={link.label}
-                  href={link.href}
+                  href={personalInfo.resumeUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className={`p-3 rounded-xl border transition-all duration-300 hover:scale-110 ${isDark
-                    ? 'border-white/10 bg-white/5 text-gray-400 hover:border-cosmic-teal/50 hover:text-cosmic-teal hover:bg-cosmic-teal/10 hover:shadow-[0_0_15px_rgba(0,245,212,0.3)]'
-                    : 'border-gray-200 bg-white text-gray-600 hover:border-cosmic-teal hover:text-cosmic-teal shadow-sm hover:shadow-[0_0_10px_rgba(0,245,212,0.3)]'
+                  className={`flex items-center gap-2 px-8 py-4 rounded-xl font-bold border-2 transition-all duration-300 hover:scale-105 ${isDark
+                    ? 'border-cosmic-teal/50 text-cosmic-teal hover:bg-cosmic-teal/10 hover:border-cosmic-teal hover:shadow-[0_0_20px_rgba(0,245,212,0.3)]'
+                    : 'border-cosmic-teal text-cosmic-teal hover:bg-cosmic-teal hover:text-gray-900'
                     }`}
                 >
-                  {link.icon}
+                  <Download size={18} />
+                  Resume
                 </a>
-              ))}
+              </div>
+
+              {/* Social Icons */}
+              <div className="flex items-center gap-3 justify-center lg:justify-start">
+                {socialLinks.map((link) => (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                    className={`p-3 rounded-xl border transition-all duration-300 hover:scale-110 ${isDark
+                      ? 'border-white/10 bg-white/5 text-gray-400 hover:border-cosmic-teal/50 hover:text-cosmic-teal hover:bg-cosmic-teal/10 hover:shadow-[0_0_15px_rgba(0,245,212,0.3)]'
+                      : 'border-gray-200 bg-white text-gray-600 hover:border-cosmic-teal hover:text-cosmic-teal shadow-sm hover:shadow-[0_0_10px_rgba(0,245,212,0.3)]'
+                      }`}
+                  >
+                    {link.icon}
+                  </a>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Right — 3D Profile Card */}
+          {/* Right Side: Coding IDE Window Mockup */}
           <div
-            className="order-1 lg:order-2 flex items-center justify-center"
+            className="flex-1 flex items-center justify-center py-8 lg:py-0 w-full"
             style={{
-              transform: `translate(${mouse.x * 10}px, ${mouse.y * 10}px)`,
+              transform: `translate(${mouse.x * 6}px, ${mouse.y * 6}px)`,
               transition: 'transform 0.4s ease-out',
             }}
           >
-            {/* Orbiting badges */}
-            <div className="relative" style={{ width: 320, height: 320 }}>
-              {/* Orbit ring */}
-              <div
-                className="absolute inset-0 rounded-full border border-dashed border-cosmic-purple/20"
-                style={{ top: '50%', left: '50%', width: 290, height: 290, transform: 'translate(-50%,-50%)' }}
-              />
-
-              {/* Floating Buttons */}
-              <div className="absolute inset-0 z-20 pointer-events-none">
-                <div className="absolute left-1/2 -top-8 -translate-x-1/2 pointer-events-auto">
-                  <button className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-[0.15em] transition-all duration-300 border backdrop-blur-md hover:animate-shake cursor-pointer whitespace-nowrap
-                    ${isDark ? 'bg-cosmic-black/80 border-cosmic-purple/40 text-cosmic-blue shadow-[0_0_15px_rgba(139,92,246,0.2)] hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] hover:border-cosmic-blue hover:text-white' : 'bg-white/90 border-cosmic-purple/30 text-cosmic-purple shadow-sm hover:shadow-md hover:border-cosmic-purple hover:bg-cosmic-purple hover:text-white'}`}>
-                    PROBLEM SOLVER
-                  </button>
-                </div>
-                <div className="absolute top-1/2 -left-20 -translate-y-1/2 pointer-events-auto">
-                  <button className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-[0.15em] transition-all duration-300 border backdrop-blur-md hover:animate-shake cursor-pointer whitespace-nowrap
-                    ${isDark ? 'bg-cosmic-black/80 border-cosmic-purple/40 text-cosmic-blue shadow-[0_0_15px_rgba(139,92,246,0.2)] hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] hover:border-cosmic-blue hover:text-white' : 'bg-white/90 border-cosmic-purple/30 text-cosmic-purple shadow-sm hover:shadow-md hover:border-cosmic-purple hover:bg-cosmic-purple hover:text-white'}`}>
-                    INNOVATOR
-                  </button>
-                </div>
-                <div className="absolute top-1/2 -right-20 -translate-y-1/2 pointer-events-auto">
-                  <button className={`px-5 py-2.5 rounded-xl text-xs font-bold tracking-[0.15em] transition-all duration-300 border backdrop-blur-md hover:animate-shake cursor-pointer whitespace-nowrap
-                    ${isDark ? 'bg-cosmic-black/80 border-cosmic-purple/40 text-cosmic-blue shadow-[0_0_15px_rgba(139,92,246,0.2)] hover:shadow-[0_0_20px_rgba(0,217,255,0.4)] hover:border-cosmic-blue hover:text-white' : 'bg-white/90 border-cosmic-purple/30 text-cosmic-purple shadow-sm hover:shadow-md hover:border-cosmic-purple hover:bg-cosmic-purple hover:text-white'}`}>
-                    DEVELOPER
-                  </button>
-                </div>
+            <div className="relative w-full max-w-xl px-12 py-10">
+              {/* Floating ambient role badges positioned safely inside the padding boundary with z-20 */}
+              <div className="absolute top-0 left-6 z-20 px-4 py-2 rounded-xl bg-cosmic-blue/10 border border-cosmic-blue/20 flex items-center justify-center text-cosmic-blue text-xs font-bold font-mono animate-float-slow backdrop-blur-sm shadow-[0_0_15px_rgba(0,217,255,0.1)] whitespace-nowrap">
+                Developer
+              </div>
+              <div className="absolute bottom-0 right-6 z-20 px-4 py-2 rounded-xl bg-cosmic-purple/10 border border-cosmic-purple/20 flex items-center justify-center text-cosmic-purple text-xs font-bold font-mono animate-float-delayed backdrop-blur-sm shadow-[0_0_15px_rgba(139,92,246,0.1)] whitespace-nowrap">
+                Tech Enthusiast
+              </div>
+              <div className="absolute top-1/2 -translate-y-1/2 right-0 lg:-right-6 z-20 px-4 py-2 rounded-xl bg-cosmic-teal/10 border border-cosmic-teal/20 flex items-center justify-center text-cosmic-teal text-xs font-bold font-mono animate-float-slow backdrop-blur-sm shadow-[0_0_15px_rgba(0,245,212,0.1)] whitespace-nowrap">
+                Innovator
               </div>
 
-
-
-              {ORBIT_BADGES.map((badge) => (
-                <div
-                  key={badge.label}
-                  className="absolute"
-                  style={{
-                    top: '50%', left: '50%',
-                    width: 0, height: 0,
-                    animation: `orbit 20s linear infinite`,
-                    animationDelay: badge.delay,
-                  }}
-                >
-                  <div
-                    className={`absolute flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold border backdrop-blur-md whitespace-nowrap ${isDark
-                      ? 'bg-cosmic-black/80 border-cosmic-purple/40 text-white shadow-[0_0_10px_rgba(139,92,246,0.4)]'
-                      : 'bg-white/90 border-cosmic-purple/30 text-gray-800 shadow-md'
-                      }`}
-                    style={{ transform: `translate(-50%, -50%)` }}
-                  >
-                    <span>{badge.icon}</span>
-                    {badge.label}
-                  </div>
-                </div>
-              ))}
-
-              {/* 3D Profile Card */}
+              {/* Code window */}
               <div
                 ref={cardRef}
                 onMouseMove={handleCardMouseMove}
                 onMouseLeave={handleCardMouseLeave}
-                onClick={() => setShowLightbox(true)}
-                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 cursor-pointer"
+                className={`w-full rounded-2xl border ${
+                  isDark
+                    ? 'bg-cosmic-black/90 border-cosmic-purple/40 shadow-[0_0_35px_rgba(139,92,246,0.2)]'
+                    : 'bg-white border-cosmic-purple/20 shadow-[0_20px_40px_rgba(139,92,246,0.1)]'
+                } overflow-hidden backdrop-blur-xl transition-all duration-300 hover:border-cosmic-blue/50 hover:shadow-[0_0_40px_rgba(0,217,255,0.35)]`}
                 style={{
-                  transform: `translate(-50%, -50%) perspective(800px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
+                  transform: `perspective(1000px) rotateX(${tilt.x}deg) rotateY(${tilt.y}deg)`,
                   transition: 'transform 0.15s ease-out',
                 }}
               >
-                <div
-                  className={`relative w-52 h-52 rounded-2xl overflow-hidden border-2 ${isDark ? 'border-cosmic-purple/50' : 'border-cosmic-purple/30'
-                    }`}
-                  style={{
-                    boxShadow: isDark
-                      ? `0 0 30px rgba(139,92,246,0.4), 0 0 60px rgba(0,217,255,0.2), inset 0 0 20px rgba(139,92,246,0.1)`
-                      : `0 20px 60px rgba(139,92,246,0.2), 0 0 30px rgba(0,217,255,0.1)`,
-                  }}
-                >
-                  <div className="w-full h-full relative group bg-cosmic-black">
-                    <img
-                      src={personalInfo.profileImage}
-                      alt={personalInfo.name}
-                      className="w-full h-full object-cover opacity-30 blur-xl scale-110 group-hover:blur-md transition-all duration-700"
-                    />
-                    <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <div className="w-14 h-14 rounded-full border border-cosmic-teal/40 bg-cosmic-teal/10 flex items-center justify-center backdrop-blur-md group-hover:scale-110 group-hover:bg-cosmic-teal/20 transition-all duration-300 shadow-[0_0_15px_rgba(0,245,212,0.2)]">
-                        <svg className="w-6 h-6 text-cosmic-teal" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                        </svg>
-                      </div>
-                      <span className="text-[10px] font-bold text-cosmic-teal mt-3 tracking-[0.2em]">VIEW PROFILE</span>
-                    </div>
+                {/* Header bar */}
+                <div className={`flex items-center justify-between px-4 py-3.5 border-b ${
+                  isDark ? 'bg-white/5 border-white/10' : 'bg-gray-100/80 border-gray-200'
+                }`}>
+                  <div className="flex gap-2">
+                    <span className="w-3.5 h-3.5 rounded-full bg-[#ff5f56] shadow-[0_0_6px_rgba(255,95,86,0.4)]" />
+                    <span className="w-3.5 h-3.5 rounded-full bg-[#ffbd2e] shadow-[0_0_6px_rgba(255,189,46,0.4)]" />
+                    <span className="w-3.5 h-3.5 rounded-full bg-[#27c93f] shadow-[0_0_6px_rgba(39,201,63,0.4)]" />
                   </div>
-                  {/* Holographic overlay */}
-                  <div
-                    className="absolute inset-0"
-                    style={{
-                      background: `linear-gradient(
-                        ${135 + tilt.y * 2}deg,
-                        rgba(0,245,212,0.08) 0%,
-                        transparent 40%,
-                        rgba(139,92,246,0.08) 100%
-                      )`,
-                    }}
-                  />
-                  {/* Bottom label */}
-                  <div className="absolute bottom-0 left-0 right-0 p-3 bg-gradient-to-t from-black/80 to-transparent">
-                    <p className="text-white text-sm font-bold">{personalInfo.name}</p>
-                    <p className="text-cosmic-teal text-xs">Full Stack Developer</p>
+                  
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={handleRunCode}
+                      className={`flex items-center gap-1.5 px-3 py-1 rounded-lg font-mono text-[10px] font-bold border transition-all duration-300 ${
+                        isRunning
+                          ? 'bg-cosmic-teal/20 border-cosmic-teal text-cosmic-teal shadow-[0_0_10px_rgba(0,245,212,0.3)] animate-pulse'
+                          : isDark
+                          ? 'bg-white/5 border-white/10 text-gray-400 hover:border-cosmic-teal/50 hover:text-cosmic-teal hover:bg-cosmic-teal/5 hover:shadow-[0_0_10px_rgba(0,245,212,0.2)]'
+                          : 'bg-gray-200/50 border-gray-300 text-gray-600 hover:border-cosmic-teal hover:text-cosmic-teal hover:bg-cosmic-teal/10 shadow-sm'
+                      }`}
+                    >
+                      <span className="text-[8px]">▶</span> {isRunning ? 'RUNNING...' : 'RUN CODE'}
+                    </button>
+                    <span className={`text-xs font-mono font-medium tracking-wider ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
+                      portfolio.js
+                    </span>
+                  </div>
+                </div>
+
+                {/* Editor Content */}
+                <div className="p-6 sm:p-8 font-mono text-sm sm:text-base leading-relaxed text-left relative overflow-hidden bg-black/40 min-h-[220px]">
+                  {/* Vertical indicator bar on right edge */}
+                  <div className="absolute right-4 top-4 bottom-4 w-[2px] bg-cosmic-blue/80 shadow-[0_0_12px_#00D9FF] animate-pulse" />
+
+                  {/* Code structure */}
+                  <div className="space-y-3 relative z-10 select-none">
+                    <div>
+                      <span className="text-[#ff79c6] font-semibold">const</span>{' '}
+                      <span className="text-[#50fa7b]">developer</span>{' '}
+                      <span className="text-[#ff79c6]">=</span>{' '}
+                      <span className="text-[#f8f8f2]">{'{'}</span>
+                    </div>
+
+                    <div className="pl-6">
+                      <span className="text-[#ffb86c]">name</span>
+                      <span className="text-[#f8f8f2]">:</span>{' '}
+                      <span className="text-[#f1fa8c]">'Murali Krishna'</span>
+                      <span className="text-[#f8f8f2]">,</span>
+                    </div>
+
+                    <div className="pl-6">
+                      <span className="text-[#ffb86c]">role</span>
+                      <span className="text-[#f8f8f2]">:</span>{' '}
+                      <span className="text-[#f1fa8c]">'Python Full Stack'</span>
+                    </div>
+
+                    <div>
+                      <span className="text-[#f8f8f2]">{'}'};</span>
+                    </div>
+
+                    <div className="h-2" />
+
+                    <div>
+                      <span className="text-[#ff79c6] font-semibold">function</span>{' '}
+                      <span className="text-[#50fa7b]">build</span>
+                      <span className="text-[#f8f8f2]">()</span>{' '}
+                      <span className="text-[#f8f8f2]">{'{'}</span>
+                    </div>
+
+                    <div className="pl-6">
+                      <span className="text-[#ff79c6] font-semibold">return</span>{' '}
+                      <span className="text-[#f1fa8c]">'🚀 Excellence'</span>
+                      <span className="text-[#f8f8f2] font-semibold">;</span>
+                    </div>
+
+                    <div>
+                      <span className="text-[#f8f8f2]">{'}'}</span>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-
-
           </div>
+
         </div>
 
         {/* Scroll down indicator */}
@@ -342,26 +376,6 @@ export default function Hero() {
           </button>
         </div>
       </div>
-
-      {/* Lightbox */}
-      {showLightbox && (
-        <div
-          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4"
-          onClick={() => setShowLightbox(false)}
-        >
-          <div className="relative max-w-sm w-full">
-            <img
-              src={personalInfo.profileImage}
-              alt={personalInfo.name}
-              className="w-full rounded-2xl shadow-[0_0_60px_rgba(139,92,246,0.5)]"
-            />
-            <div className="text-center mt-4">
-              <h3 className="text-white text-2xl font-bold">{personalInfo.name}</h3>
-              <p className="text-cosmic-teal">{personalInfo.title}</p>
-            </div>
-          </div>
-        </div>
-      )}
     </section>
   );
 }

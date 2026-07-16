@@ -1,49 +1,31 @@
-import { User, BookOpen, Landmark, GraduationCap, Award } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { User, Eye } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 import { useTheme } from '../context/ThemeContext';
-import { useScrollReveal, useScrollRevealGroup } from '../hooks/useScrollReveal';
+import { useScrollReveal } from '../hooks/useScrollReveal';
 import TiltCard from './TiltCard';
-
-const educationList = [
-  {
-    degree: 'Master of Computer Applications (MCA)',
-    institution: 'Dr. M.G.R. Educational and Research Institute',
-    period: '2024 - 2026',
-    performance: 'CGPA of 8.0 (Up to 3rd Semester)',
-    icon: <GraduationCap size={22} style={{ color: '#00F5D4' }} />,
-    glow: 'rgba(0,245,212,0.3)',
-  },
-  {
-    degree: 'Bachelor of Computer Science (BSc)',
-    institution: 'C. Abdul Hakeem College',
-    period: '2021 - 2024',
-    performance: '72% in Academics',
-    icon: <BookOpen size={22} style={{ color: '#00D9FF' }} />,
-    glow: 'rgba(0,217,255,0.3)',
-  },
-  {
-    degree: 'Higher Secondary Certificate (HSC)',
-    institution: 'Sri Vijay Matric Hr.Sec School',
-    period: '2020 - 2021',
-    performance: '78% Score',
-    icon: <Landmark size={22} style={{ color: '#8B5CF6' }} />,
-    glow: 'rgba(139,92,246,0.3)',
-  },
-  {
-    degree: 'Secondary School Certificate (SSLC)',
-    institution: 'Sri Vijay Matric Hr.Sec School',
-    period: '2018 - 2019',
-    performance: '70% Score',
-    icon: <Award size={22} style={{ color: '#00D9FF' }} />,
-    glow: 'rgba(0,217,255,0.3)',
-  },
-];
 
 export default function About() {
   const { isDark } = useTheme();
   const titleRef = useScrollReveal<HTMLDivElement>({ delay: 0 });
   const profileRef = useScrollReveal<HTMLDivElement>({ delay: 100 });
-  const setEduRef = useScrollRevealGroup(educationList.length, 120);
+  
+  const [showLightbox, setShowLightbox] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const triggerLightbox = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    setShowLightbox(true);
+    timerRef.current = setTimeout(() => {
+      setShowLightbox(false);
+    }, 3000);
+  };
+
+  useEffect(() => {
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
 
   return (
     <section id="about" className={`py-24 relative overflow-hidden ${isDark ? 'bg-transparent' : 'bg-white/80'}`}>
@@ -59,16 +41,63 @@ export default function About() {
             </span>
           </h2>
           <p className={`text-lg max-w-2xl mx-auto ${isDark ? 'text-gray-400' : 'text-gray-600'}`}>
-            Professional journey, academic background, and passion for technology.
+            Professional profile, academic background, and passion for technology.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-12 gap-12 items-start">
-          {/* Profile card */}
-          <div className="lg:col-span-5 reveal-left" ref={profileRef}>
+        <div className="grid lg:grid-cols-12 gap-12 items-center">
+          {/* Profile Picture Card */}
+          <div className="lg:col-span-5 reveal-left flex justify-center" ref={profileRef}>
+            <TiltCard
+              glowColor="rgba(139,92,246,0.3)"
+              maxTilt={8}
+              className={`p-3 rounded-3xl border w-full max-w-sm ${
+                isDark
+                  ? 'bg-white/5 backdrop-blur-md border-white/10'
+                  : 'bg-white shadow-lg border-transparent'
+              }`}
+            >
+              <div
+                onClick={triggerLightbox}
+                className="relative aspect-square w-full rounded-2xl overflow-hidden group border border-cosmic-purple/30 cursor-pointer bg-cosmic-black"
+                style={{
+                  boxShadow: isDark
+                    ? '0 0 25px rgba(139,92,246,0.2)'
+                    : '0 10px 30px rgba(139,92,246,0.06)'
+                }}
+              >
+                {/* Encrypted / Blurred image */}
+                <img
+                  src={personalInfo.profileImage}
+                  alt={personalInfo.name}
+                  className="w-full h-full object-cover opacity-20 blur-2xl scale-110 group-hover:opacity-30 group-hover:blur-xl transition-all duration-700"
+                />
+
+                {/* Central "VIEW PORTRAIT" high-tech overlay (Permanent, but interactive on hover) */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center bg-cosmic-black/40 backdrop-blur-sm group-hover:bg-cosmic-black/20 transition-all duration-300">
+                  <div className="w-14 h-14 rounded-full border border-cosmic-teal/40 bg-cosmic-teal/10 flex items-center justify-center backdrop-blur-md group-hover:scale-110 group-hover:bg-cosmic-teal/20 group-hover:border-cosmic-teal transition-all duration-300 shadow-[0_0_15px_rgba(0,245,212,0.2)] group-hover:shadow-[0_0_25px_rgba(0,245,212,0.4)]">
+                    <Eye className="w-6 h-6 text-cosmic-teal" />
+                  </div>
+                  <span className="text-[10px] font-bold text-cosmic-teal mt-3 tracking-[0.2em] uppercase">VIEW PORTRAIT</span>
+                  <span className="text-[9px] text-gray-500 mt-1 tracking-wider">(3s Decrypt Preview)</span>
+                </div>
+
+                <div className="absolute inset-0 bg-gradient-to-t from-cosmic-black/85 via-transparent to-transparent pointer-events-none" />
+                
+                {/* Bottom Overlay Label */}
+                <div className="absolute bottom-4 left-4 right-4 p-3 rounded-xl bg-cosmic-black/80 backdrop-blur-md border border-white/10 text-left">
+                  <p className="text-white text-sm font-bold tracking-wide">{personalInfo.name}</p>
+                  <p className="text-cosmic-teal text-[10px] font-semibold mt-0.5">Python Full Stack Developer</p>
+                </div>
+              </div>
+            </TiltCard>
+          </div>
+
+          {/* Professional Profile */}
+          <div className="lg:col-span-7">
             <TiltCard
               glowColor="rgba(0,245,212,0.25)"
-              maxTilt={8}
+              maxTilt={6}
               className={`p-8 rounded-2xl border ${
                 isDark
                   ? 'bg-white/5 backdrop-blur-md border-white/10'
@@ -81,10 +110,10 @@ export default function About() {
               </div>
 
               <p className={`leading-relaxed mb-5 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                I am a dedicated <strong>Python Full Stack Developer</strong> with a strong academic foundation in Computer Applications. I thrive on translating complex requirements into simple, responsive, and robust digital solutions.
+                I am a highly passionate <strong>Python Full Stack Developer</strong> and tech enthusiast with a deep commitment to the IT sector. I thrive on solving complex computational problems and translating them into simple, responsive, and robust digital solutions.
               </p>
               <p className={`leading-relaxed mb-7 ${isDark ? 'text-gray-300' : 'text-gray-600'}`}>
-                With hands-on internship experience in both frontend development using <strong>React.js</strong> and backend architectures with <strong>Django & MySQL</strong>, I am highly eager to apply my problem-solving capabilities to forward-thinking teams.
+                With hands-on internship experience in building modern web architectures using <strong>React.js</strong>, <strong>Django</strong>, and <strong>MySQL</strong>, I am constantly learning, adapting to new technologies, and eager to bring my innovative energy and dedication to forward-thinking tech teams.
               </p>
 
               <div className={`grid grid-cols-2 gap-5 border-t pt-6 ${isDark ? 'border-white/10' : 'border-gray-100'}`}>
@@ -105,57 +134,37 @@ export default function About() {
               </div>
             </TiltCard>
           </div>
+        </div>
+      </div>
 
-          {/* Education timeline */}
-          <div className="lg:col-span-7 space-y-5">
-            <h3 className={`text-2xl font-bold flex items-center gap-3 mb-6 ${isDark ? 'text-white' : 'text-gray-900'}`}>
-              <BookOpen size={26} style={{ color: '#00D9FF', filter: isDark ? 'drop-shadow(0 0 8px rgba(0,217,255,0.6))' : '' }} />
-              Educational Qualifications
-            </h3>
-
-            <div className={`relative border-l-2 ml-5 pl-8 space-y-6 ${isDark ? 'border-cosmic-purple/30' : 'border-cosmic-blue/30'}`}>
-              {educationList.map((edu, index) => (
-                <div
-                  key={index}
-                  className="relative group reveal-hidden"
-                  ref={setEduRef(index) as any}
-                  style={{ transitionDelay: `${index * 120}ms` }}
-                >
-                  {/* Dot */}
-                  <div className={`absolute -left-[47px] top-3 p-2 rounded-full border-2 group-hover:scale-110 transition-transform ${
-                    isDark ? 'bg-gray-950 border-cosmic-purple' : 'bg-white border-cosmic-purple shadow-sm'
-                  }`}
-                    style={{ boxShadow: isDark ? '0 0 15px rgba(139,92,246,0.5)' : '' }}
-                  >
-                    {edu.icon}
-                  </div>
-
-                  <TiltCard
-                    glowColor={edu.glow}
-                    maxTilt={6}
-                    className={`p-6 rounded-2xl border ${
-                      isDark
-                        ? 'bg-white/5 backdrop-blur-sm border-white/10'
-                        : 'bg-white shadow-sm border-transparent'
-                    }`}
-                  >
-                    <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-2">
-                      <h4 className={`text-base font-bold ${isDark ? 'text-white' : 'text-gray-900'}`}>{edu.degree}</h4>
-                      <span className={`text-xs font-semibold px-3 py-1 rounded-full border ${isDark ? 'bg-cosmic-purple/15 text-cosmic-purple border-cosmic-purple/30' : 'bg-cosmic-blue/10 text-cosmic-blue border-cosmic-blue/20'}`}>
-                        {edu.period}
-                      </span>
-                    </div>
-                    <p className={`text-sm font-medium mb-1 ${isDark ? 'text-gray-400' : 'text-gray-500'}`}>{edu.institution}</p>
-                    <p className="text-sm font-bold" style={{ color: '#00F5D4', textShadow: isDark ? '0 0 6px rgba(0,245,212,0.4)' : '' }}>
-                      {edu.performance}
-                    </p>
-                  </TiltCard>
-                </div>
-              ))}
+      {/* Lightbox / Modal Modal - Auto closes in 3 seconds */}
+      {showLightbox && (
+        <div
+          className="fixed inset-0 z-50 bg-black/90 backdrop-blur-xl flex items-center justify-center p-4"
+          onClick={() => setShowLightbox(false)}
+        >
+          <div 
+            className="relative max-w-sm w-full p-4 rounded-2xl bg-cosmic-black/90 border border-white/10 shadow-[0_0_50px_rgba(139,92,246,0.4)] animate-in fade-in zoom-in-95 duration-200"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="relative aspect-square w-full rounded-xl overflow-hidden border border-cosmic-purple/30">
+              <img
+                src={personalInfo.profileImage}
+                alt={personalInfo.name}
+                className="w-full h-full object-cover"
+              />
+            </div>
+            <div className="text-center mt-4">
+              <h3 className="text-white text-xl font-bold">{personalInfo.name}</h3>
+              <p className="text-cosmic-teal text-sm">{personalInfo.title}</p>
+            </div>
+            {/* 3s Visual Progress Bar */}
+            <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden mt-4">
+              <div className="h-full bg-cosmic-teal animate-countdown-3s" />
             </div>
           </div>
         </div>
-      </div>
+      )}
     </section>
   );
 }

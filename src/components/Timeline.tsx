@@ -2,6 +2,7 @@ import { Briefcase, Calendar, MapPin, Building2, Code2 } from 'lucide-react';
 import { experience } from '../data/portfolioData';
 import { useTheme } from '../context/ThemeContext';
 import { useScrollRevealGroup } from '../hooks/useScrollReveal';
+import TiltCard from './TiltCard';
 
 export default function Timeline() {
   const { isDark } = useTheme();
@@ -28,9 +29,14 @@ export default function Timeline() {
         <div className="relative max-w-4xl mx-auto">
           {/* Timeline line */}
           <div
-            className={`absolute left-8 top-0 bottom-0 w-0.5 ${isDark ? 'bg-cosmic-blue/30' : 'bg-cosmic-blue/20'}`}
-            style={{ boxShadow: isDark ? '0 0 10px rgba(0,217,255,0.5)' : '' }}
-          />
+            className={`absolute left-8 top-0 bottom-0 w-[2px] ${isDark ? 'bg-cosmic-blue/20' : 'bg-cosmic-blue/15'} overflow-hidden`}
+            style={{ boxShadow: isDark ? '0 0 8px rgba(0,217,255,0.2)' : '' }}
+          >
+            <div 
+              className="absolute top-0 left-0 right-0 w-full bg-gradient-to-b from-transparent via-cosmic-blue to-transparent h-32 animate-laser-pulse"
+              style={{ filter: 'drop-shadow(0 0 8px #00D9FF)' }}
+            />
+          </div>
 
           <div className="space-y-16">
             {experience.map((exp, index) => (
@@ -49,13 +55,14 @@ export default function Timeline() {
                   >
                     <Briefcase size={16} style={{ color: '#8B5CF6' }} />
                   </div>
-
                   {/* Card */}
                   <div className="ml-20 md:ml-24 w-full pr-4 md:pr-0 md:max-w-3xl">
-                    <div
-                      className={`group p-6 md:p-8 rounded-2xl border transition-all duration-500 hover:scale-[1.02] ${isDark
-                          ? 'bg-white/5 backdrop-blur-md border-white/10 hover:border-cosmic-purple/50 hover:shadow-[0_0_30px_rgba(139,92,246,0.2)]'
-                          : 'bg-white shadow-lg border-transparent hover:shadow-[0_0_20px_rgba(139,92,246,0.15)] hover:border-cosmic-purple/20'
+                    <TiltCard
+                      glowColor="rgba(139,92,246,0.25)"
+                      maxTilt={4}
+                      className={`p-6 md:p-8 rounded-2xl ${isDark
+                          ? 'bg-white/5 border border-white/10'
+                          : 'bg-white shadow-lg border border-transparent'
                         }`}
                     >
                       <div className="flex flex-wrap gap-4 items-start justify-between mb-4">
@@ -91,14 +98,14 @@ export default function Timeline() {
                       <div className="flex flex-wrap gap-2">
                         {exp.technologies.map((tech) => (
                           <span key={tech} className={`flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-lg border ${isDark
-                              ? 'bg-white/5 border-white/10 text-cosmic-purple'
+                              ? 'bg-white/5 border border-white/10 text-cosmic-purple'
                               : 'bg-cosmic-purple/10 border-cosmic-purple/20 text-cosmic-purple'
                             }`}>
                             <Code2 size={10} /> {tech}
                           </span>
                         ))}
                       </div>
-                    </div>
+                    </TiltCard>
                   </div>
                 </div>
               </div>

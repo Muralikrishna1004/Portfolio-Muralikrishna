@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Terminal Console - Murali Krishna Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-color: #050816;
+      --terminal-bg: #070913;
+      --text-color: #00F5D4;
+      --cyan: #00D9FF;
+      --purple: #8B5CF6;
+      --white: #ffffff;
+      --gray: #4b5563;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Fira Code', monospace;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      position: relative;
+    }
+
+    /* Cosmic Background Nebulas */
+    body::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
+        radial-gradient(circle at 90% 80%, rgba(0, 217, 255, 0.1) 0%, transparent 50%);
+      z-index: -1;
+    }
+
+    /* CRT screen flicker & curve effect */
+    .crt-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+      background-size: 100% 4px, 6px 100%;
+      z-index: 10;
+      pointer-events: none;
+      opacity: 0.85;
+    }
+
+    .crt-overlay::after {
+      content: " ";
+      display: block;
+      position: absolute;
+      top: 0; left: 0; bottom: 0; right: 0;
+      background: radial-gradient(circle, transparent 60%, rgba(0, 0, 0, 0.4) 100%);
+      z-index: 11;
+    }
+
+    /* Terminal Container */
+    .terminal {
+      width: 100%;
+      max-width: 800px;
+      height: 90vh;
+      max-height: 600px;
+      background-color: var(--terminal-bg);
+      border: 1px solid rgba(139, 92, 246, 0.3);
+      border-radius: 12px;
+      box-shadow: 0 0 40px rgba(139, 92, 246, 0.2), inset 0 0 20px rgba(0, 217, 255, 0.05);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Header Bar */
+    .header {
+      background-color: rgba(255, 255, 255, 0.03);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: relative;
+      z-index: 5;
+    }
+
+    .window-controls {
+      display: flex;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+    }
+
+    .dot.red { background-color: #ff5f56; }
+    .dot.yellow { background-color: #ffbd2e; }
+    .dot.green { background-color: #27c93f; }
+
+    .header-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Console Body */
+    .console-body {
+      flex: 1;
+      padding: 30px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.6;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      text-shadow: 0 0 4px rgba(0, 245, 212, 0.3);
+    }
+
+    /* Scrollbar */
+    .console-body::-webkit-scrollbar {
+      width: 8px;
+    }
+    .console-body::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .console-body::-webkit-scrollbar-thumb {
+      background: rgba(139, 92, 246, 0.2);
+      border-radius: 4px;
+    }
+    .console-body::-webkit-scrollbar-thumb:hover {
+      background: rgba(0, 245, 212, 0.4);
+    }
+
+    /* Text Colors */
+    .cmd { color: var(--white); font-weight: bold; }
+    .system { color: var(--purple); }
+    .cyan { color: var(--cyan); }
+    .white { color: var(--white); }
+    .gray { color: var(--gray); }
+    .success { color: #27c93f; font-weight: bold; }
+
+    /* Typing Line Effects */
+    .line {
+      display: none;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    .line.visible {
+      display: flex;
+    }
+
+    .prompt::before {
+      content: '$ ';
+      color: var(--purple);
+      font-weight: bold;
+    }
+
+    .cursor::after {
+      content: '_';
+      animation: blink 0.8s infinite step-end;
+      color: var(--text-color);
+      margin-left: 2px;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* Info Table */
+    .info-table {
+      border: 1px dashed rgba(0, 217, 255, 0.2);
+      border-radius: 8px;
+      padding: 16px;
+      margin: 10px 0;
+      background-color: rgba(0, 0, 0, 0.2);
+      display: none;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .info-table.visible {
+      display: flex;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .info-label {
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    .info-val {
+      font-weight: bold;
+    }
+
+    /* Actions Panel */
+    .actions {
+      display: none;
+      justify-content: center;
+      gap: 16px;
+      margin-top: auto;
+      padding-top: 20px;
+      border-t: 1px dashed rgba(255, 255, 255, 0.05);
+    }
+
+    .actions.visible {
+      display: flex;
+    }
+
+    .btn {
+      font-family: 'Fira Code', monospace;
+      font-size: 12px;
+      font-weight: bold;
+      color: var(--white);
+      background-color: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 10px 20px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background-color: rgba(0, 245, 212, 0.1);
+      border-color: var(--text-color);
+      box-shadow: 0 0 15px rgba(0, 245, 212, 0.2);
+      transform: translateY(-2px);
+    }
+
+    .btn.primary {
+      background-color: var(--purple);
+      border-color: var(--purple);
+    }
+
+    .btn.primary:hover {
+      background-color: var(--cyan);
+      border-color: var(--cyan);
+      box-shadow: 0 0 15px rgba(0, 217, 255, 0.3);
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+  <div class="crt-overlay"></div>
+
+  <div class="terminal animate-in">
+    <!-- Header -->
+    <div class="header">
+      <div class="window-controls">
+        <span class="dot red"></span>
+        <span class="dot yellow"></span>
+        <span class="dot green"></span>
+      </div>
+      <div class="header-title">EXECUTION TERMINAL</div>
+      <div style="width: 52px;"></div> <!-- Spacer -->
+    </div>
+
+    <!-- Console Output -->
+    <div class="console-body" id="console">
+      <div class="line prompt cmd visible" id="line1">node portfolio.js</div>
+      <div class="line system visible" id="line2">[SYSTEM] Initializing cosmic runtime environment...</div>
+      <div class="line system" id="line3">[SYSTEM] Connecting to local database...</div>
+      <div class="line system" id="line4">[SYSTEM] Fetching stack details: React, Django, Python, MySQL</div>
+      <div class="line system" id="line5">[SYSTEM] Compiling portfolio assets...</div>
+      <div class="line success" id="line6">✓ Build Successful!</div>
+      
+      <!-- Profile Data Table -->
+      <div class="info-table" id="infoTable">
+        <div class="info-row">
+          <span class="info-label">Developer</span>
+          <span class="info-val cyan">Murali Krishna K</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Status</span>
+          <span class="info-val success">Active & Available for Opportunities</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Experience</span>
+          <span class="info-val white">Python Full Stack Intern at Vcodez</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Academics</span>
+          <span class="info-val white">MCA (CGPA: 8.0) - Dr. M.G.R. Institute</span>
+        </div>
+        <div class="info-row">
+          <span class="info-label">Key Stack</span>
+          <span class="info-val cyan">Python, Django, React, MySQL, JS, HTML/CSS</span>
+        </div>
+      </div>
+
+      <div class="line success" id="line7">🚀 Murali Krishna is ready to build excellence.</div>
+      <div class="line visible" id="line8"><span class="cursor"></span></div>
+
+      <!-- Actions -->
+      <div class="actions" id="actions">
+        <button class="btn" onclick="rerunBuild()">RE-RUN</button>
+        <button class="btn primary" onclick="window.close()">CLOSE TERMINAL</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const sequence = [
+      { id: 'line1', delay: 100 },
+      { id: 'line2', delay: 600 },
+      { id: 'line3', delay: 1200 },
+      { id: 'line4', delay: 1700 },
+      { id: 'line5', delay: 2100 },
+      { id: 'line6', delay: 2600 },
+      { id: 'infoTable', delay: 3000 },
+      { id: 'line7', delay: 3800 },
+      { id: 'actions', delay: 4200 }
+    ];
+
+    function runSequence() {
+      // Hide all lines except line 1 and 2 initially
+      sequence.forEach(item => {
+        const el = document.getElementById(item.id);
+        if (el && item.id !== 'line1' && item.id !== 'line2') {
+          el.classList.remove('visible');
+          if (item.id === 'infoTable' || item.id === 'actions') {
+            el.classList.remove('visible');
+            el.style.display = 'none';
+          }
+        }
+      });
+
+      // Show cursor line
+      document.getElementById('line8').classList.add('visible');
+
+      // Schedule sequence reveal
+      sequence.forEach(item => {
+        setTimeout(() => {
+          const el = document.getElementById(item.id);
+          if (el) {
+            el.classList.add('visible');
+            if (item.id === 'infoTable' || item.id === 'actions') {
+              el.style.display = 'flex';
+            }
+            // Auto scroll console
+            const consoleEl = document.getElementById('console');
+            consoleEl.scrollTop = consoleEl.scrollHeight;
+          }
+        }, item.delay);
+      });
+    }
+
+    function rerunBuild() {
+      runSequence();
+    }
+
+    // Auto-start on load
+    window.addEventListener('load', runSequence);
+  </script>
+</body>
+</html>

@@ -1,15 +1,15 @@
 import { useEffect, useRef } from 'react';
 import { useMouseParallax } from '../hooks/useMouseParallax';
 
-// Generate stable particle data once
-const PARTICLES = Array.from({ length: 60 }, (_, i) => ({
+// Generate stable particle data once - increased length to 125, sizes slightly larger and more vibrant
+const PARTICLES = Array.from({ length: 125 }, (_, i) => ({
   id: i,
-  size: Math.random() * 3 + 1,
+  size: Math.random() * 4.5 + 1.5,
   x: Math.random() * 100,
   delay: Math.random() * 20,
-  duration: 15 + Math.random() * 25,
+  duration: 12 + Math.random() * 20, // slightly faster floating movement
   color: ['#00F5D4', '#00D9FF', '#8B5CF6', '#ffffff'][Math.floor(Math.random() * 4)],
-  opacity: 0.3 + Math.random() * 0.5,
+  opacity: 0.35 + Math.random() * 0.55,
 }));
 
 export default function CosmicBackground() {
@@ -20,13 +20,13 @@ export default function CosmicBackground() {
 
   useEffect(() => {
     if (layer1Ref.current) {
-      layer1Ref.current.style.transform = `translate(${mouse.x * -8}px, ${mouse.y * -8}px)`;
+      layer1Ref.current.style.transform = `translate(${mouse.x * -16}px, ${mouse.y * -16}px)`;
     }
     if (layer2Ref.current) {
-      layer2Ref.current.style.transform = `translate(${mouse.x * -18}px, ${mouse.y * -18}px)`;
+      layer2Ref.current.style.transform = `translate(${mouse.x * -36}px, ${mouse.y * -36}px)`;
     }
     if (layer3Ref.current) {
-      layer3Ref.current.style.transform = `translate(${mouse.x * -30}px, ${mouse.y * -30}px)`;
+      layer3Ref.current.style.transform = `translate(${mouse.x * -56}px, ${mouse.y * -56}px)`;
     }
   }, [mouse.x, mouse.y]);
 

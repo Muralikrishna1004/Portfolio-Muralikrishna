@@ -82,30 +82,39 @@ export default function Skills() {
                     {category.category}
                   </h3>
                 </div>
-
-                <div className="space-y-4">
+                <div className="space-y-5">
                   {category.skills.map((skill, skillIndex) => (
-                    <div key={skill.name} className="group">
-                      <div className="flex justify-between items-center mb-2">
-                        <span className={`font-medium ${isDark ? 'text-gray-300 group-hover:text-white' : 'text-gray-700'}`}>
+                    <div key={skill.name} className="group/skill transition-all duration-300 hover:translate-x-1">
+                      <div className="flex justify-between items-center mb-1.5">
+                        <span className={`font-medium transition-colors ${
+                          isDark ? 'text-gray-300 group-hover/skill:text-cosmic-blue font-semibold' : 'text-gray-700 group-hover/skill:text-cosmic-blue font-semibold'
+                        }`}>
                           {skill.name}
                         </span>
-                        <span className="text-sm font-semibold" style={{ color: '#00F5D4', textShadow: '0 0 8px rgba(0,245,212,0.5)' }}>
+                        <span className="text-sm font-bold tracking-wide transition-all group-hover/skill:scale-105" style={{ color: '#00F5D4', textShadow: '0 0 8px rgba(0,245,212,0.5)' }}>
                           {skill.level}%
                         </span>
                       </div>
-                      <div className={`h-2 rounded-full overflow-hidden ${isDark ? 'bg-gray-800/80' : 'bg-gray-200'}`}>
+                      <div className={`h-2.5 rounded-full overflow-hidden transition-all duration-300 ${
+                        isDark ? 'bg-gray-800/80 group-hover/skill:bg-gray-800/50 shadow-inner' : 'bg-gray-200 group-hover/skill:bg-gray-200/70'
+                      }`}>
                         <div
-                          className="h-full rounded-full relative"
+                          className="h-full rounded-full relative transition-all duration-300"
                           style={{
                             width: `${skill.level}%`,
                             background: 'linear-gradient(90deg, #00F5D4, #00D9FF)',
-                            boxShadow: isDark ? '0 0 10px rgba(0,217,255,0.8)' : 'none',
+                            boxShadow: isDark ? '0 0 10px rgba(0,217,255,0.6)' : 'none',
                             transition: `width 1.2s ease-out ${categoryIndex * 100 + skillIndex * 60}ms`,
                           }}
                         >
                           {isDark && (
-                            <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/30 blur-sm rounded-full" />
+                            <>
+                              <div className="absolute top-0 right-0 bottom-0 w-4 bg-white/20 blur-xs rounded-full animate-pulse" />
+                              {/* Comet glow head on hover */}
+                              <span 
+                                className="absolute -right-1 top-1/2 -translate-y-1/2 w-2 h-2 rounded-full bg-white shadow-[0_0_8px_#00F5D4,0_0_15px_#00D9FF] opacity-0 group-hover/skill:opacity-100 transition-opacity duration-300"
+                              />
+                            </>
                           )}
                         </div>
                       </div>

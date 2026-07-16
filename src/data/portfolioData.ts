@@ -85,11 +85,11 @@ export const personalInfo = {
   fullName: 'Murali Krishna K',
   title: 'Python Full Stack Developer',
   tagline: 'Proficient in HTML, CSS, JavaScript, React.js, Core Python, Django, MySQL',
-  valueStatement: 'Python Full Stack Developer specializing in React, Django, and MySQL to build efficient, scalable web applications.',
+  valueStatement: 'A highly passionate tech enthusiast and results-driven Python Full Stack Developer, deeply committed to creating innovative, high-performance solutions in the IT sector. Specialized in building modern web applications with React, Django, and MySQL, with a focus on database efficiency and clean, scalable codebases.',
   email: 'muralicibi05@gmail.com',
   phone: '+91 6380274578',
   location: 'Vellore, Tamilnadu',
-  bio: `I am Murali Krishna K, proficient in HTML, CSS, JavaScript, React.js, Core Python, Django, MySQL. Having a strong foundation in Computer Application and a passion for technology, I aim to implement my innovative ideas and skills to accomplish projects that contribute to the organization's growth.`,
+  bio: `I am Murali Krishna K, a technology enthusiast with a deep passion for the IT sector and modern web technologies. I specialize in HTML, CSS, JavaScript, React.js, Python, Django, and MySQL. With a strong foundation in Computer Applications and an eager desire to learn and innovate, I aim to leverage my technical skills and problem-solving mindset to build impactful applications that contribute to organizational success and drive technological advancement.`,
   resumeUrl: '/muralikrishnresume.pdf',
   profileImage: '/murai.jpeg',
   socialLinks: [
@@ -312,7 +312,7 @@ export const timeline: TimelineItem[] = [
     year: '2024 - 2026',
     title: 'MCA',
     organization: 'Dr.M.G.R. Educational And Research Institute',
-    description: 'Currently Pursuing with a CGPA of 8.0 up to 3rd Semester without Backlog.',
+    description: 'Currently Pursuing with a CGPA of 8.0 without Backlog.',
     type: 'education'
   },
   {

@@ -3,6 +3,7 @@ import { ThemeProvider, useTheme } from './context/ThemeContext';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import About from './components/About';
+import Education from './components/Education';
 import Skills from './components/Skills';
 import Projects from './components/Projects';
 import Timeline from './components/Timeline';
@@ -29,7 +30,7 @@ function Portfolio() {
   useEffect(() => {
     const handleScroll = () => {
       const sections = [
-        'hero', 'about', 'skills', 'projects', 'timeline',
+        'hero', 'about', 'education', 'skills', 'projects', 'timeline',
         'certifications',
         ...(publications.length > 0 ? ['publications'] : []),
         'contact',
@@ -69,6 +70,8 @@ function Portfolio() {
           <Hero />
           <SectionDivider />
           <About />
+          <SectionDivider />
+          <Education />
           <SectionDivider />
           <Skills />
           <SectionDivider />
